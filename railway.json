@@ -1,5 +1,1 @@
-{
-  "build": {
-    "builder": "dockerfile"
-  }
-}
+{"build": {"builder": "dockerfile"}} 
