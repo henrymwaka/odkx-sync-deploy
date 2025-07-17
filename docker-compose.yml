@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_DB: odk_prod
+      POSTGRES_USER: odk_user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  sync-endpoint:
+    image: ghcr.io/odk-x/sync-endpoint-default-app:latest
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/odk_prod
+      - SPRING_DATASOURCE_USERNAME=odk_user
+      - SPRING_DATASOURCE_PASSWORD=password
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+
+volumes:
+  pgdata:
